@@ -13,8 +13,8 @@ defmodule Parallel do
     |> Enum.map(&Task.await/1)
   end
 end
-#________________________________________________
-#
+
+# Helpful Commands
 # 3 + 4
 # String.reverse "madamimadam"
 # h
