@@ -1,4 +1,5 @@
-# Folder -> Cmd -> Iex -> c "Chapter_1.exs"
+# folder -> cmd -> iex -> c "Chapter_1.exs"
+# git commit -m "xyz" -> git push -u origin main
 Code.compiler_options(ignore_module_conflict: true)
 
 #                   CHAPTER 1
@@ -25,6 +26,4 @@ end
 # i %{ name: "Dave", likes: "Elixir" }
 # i Map
 # i :cat
-#________________________________________________
-#
 # IO.puts "Hello, World!"
