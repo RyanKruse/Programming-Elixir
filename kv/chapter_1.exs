@@ -1,11 +1,12 @@
-# folder -> cmd -> iex -> c "Chapter_1.exs"
-# git commit -m "xyz" -> git push -u origin main
 Code.compiler_options(ignore_module_conflict: true)
-
+# c "Chapter_1.exs"
 #                   CHAPTER 1
 #________________________________________________
-#
+
+# IEX Validate Execution Working:
 # result = Parallel.pmap 1..1000, &(&1 * &1)
+
+# Validate Function Working:
 defmodule Parallel do
   def pmap(collection, func) do
     collection
@@ -14,7 +15,7 @@ defmodule Parallel do
   end
 end
 
-# Helpful Commands
+# IEX Helpful Commands:
 # 3 + 4
 # String.reverse "madamimadam"
 # h

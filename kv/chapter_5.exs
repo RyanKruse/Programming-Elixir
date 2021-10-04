@@ -1,133 +1,146 @@
-# folder -> cmd -> iex -> c "Chapter_5.exs"
-# git commit -m "xyz" -> git push -u origin main
 Code.compiler_options(ignore_module_conflict: true)
-
+# c "Chapter_5.exs"
 #                   CHAPTER 5
 #________________________________________________
-#
-# Binding Anonymous Functions
+
+# IEX Binding Anonymous Functions:
 # sum = fn (a, b) -> a + b end
-# sum.(1, 2)
+# sum.(1, 2)  # Returns: 3
 # greet = fn -> IO.puts "Hello" end
-# greet.()
+# greet.()  # Returns: Hello
 
-# Function No-Parentheses
+# IEX Function No-Parentheses:
 # f1 = fn a, b -> a * b end
-# f1.(5,6)
+# f1.(5, 6)  # Returns: 30
 # f2 = fn -> 99 end
-# f2.()
+# f2.()  # Returns: 99
 
-# Pattern Matching
+# IEX Pattern Matching:
 # swap = fn { a, b } -> { b, a } end
-# swap.( { 6, 8 } )
+# swap.( { 6, 8 } )  # Returns: { 8, 6 }
 
-# Quiz (pg.43)
-# list_concat = fn (a, b) -> a ++ b end
-# sum = fn (a, b, c) -> a + b + c end
-# pair_tuple_to_list = fn {a, b} -> [a, b] end
+# IEX Quiz (Page 43) - Create functions that do the following:
+# list_concat.([:a, :b], [:c, :d]) #=> [:a, :b, :c, :d]
+# sum.(1, 2, 3) #=> 6
+# pair_tuple_to_list.( { 1234, 5678 } ) #=> [ 1234, 5678 ]
 
-defmodule Temp do
-  # Multiple Bodies
-  def temp_1 do
+# IEX Quiz Answers:
+# list_concat = fn (a, b) -> a ++ b end  # Returns: [:a, :b, :c, :d]
+# sum = fn (a, b, c) -> a + b + c end  # Returns: 6
+# pair_tuple_to_list = fn { a, b } -> [a, b] end  # Returns: [ 1234, 5678 ]
+
+defmodule F do
+  # IEX Multiple Function Bodies:
+  def fun_1 do
     handle_open = fn
       {:ok, file} -> "Read data: #{IO.read(file, :line)}"
       {_, error} -> "Error: #{:file.format_error(error)}"
+      # Note: Number of arities (2) must match on all cases
     end
-    IO.puts handle_open.(File.open("chapter_5.exs"))
-    IO.puts handle_open.(File.open("nonexistent"))
+    IO.puts handle_open.(File.open("chapter_5.exs"))  # Returns: read data
+    IO.puts handle_open.(File.open("nonexistent"))  # Returns: error
   end
 
-  # Quiz (pg.45)
-  def temp_2 do
-    # Question 1
-    function_1 = fn
+  # IEX Quiz (Page 45) - Create FizzBuzz script:
+  def fun_2 do
+    # IEX Quiz Question 1:
+    fizzbuzz_1 = fn
       (0, 0, _) -> "FizzBuzz"
       (0, _, _) -> "Fizz"
       (_, 0, _) -> "Buzz"
       (_, _, c) -> c
     end
-    IO.puts function_1.(0, 0, 50)
-    IO.puts function_1.(0, 50, 50)
-    IO.puts function_1.(50, 0, 50)
-    IO.puts function_1.(50, 50, 50)
+    # Returns: matching string
+    IO.puts fizzbuzz_1.(0, 0, 50)
+    IO.puts fizzbuzz_1.(0, 50, 50)
+    IO.puts fizzbuzz_1.(50, 0, 50)
+    IO.puts fizzbuzz_1.(50, 50, 50)
     IO.puts "___"
 
-    # Question 2
-    function_2 = fn
-      (n) -> function_1.(rem(n, 3), rem(n, 5), n)
+    # IEX Quiz Question 2:
+    fizzbuzz_2 = fn
+      (n) -> fizzbuzz_1.(rem(n, 3), rem(n, 5), n)
     end
-    IO.puts function_2.(10)
-    IO.puts function_2.(11)
-    IO.puts function_2.(12)
-    IO.puts function_2.(13)
-    IO.puts function_2.(14)
-    IO.puts function_2.(15)
-    IO.puts function_2.(16)
+    # Returns: matching string
+    IO.puts fizzbuzz_2.(10)
+    IO.puts fizzbuzz_2.(11)
+    IO.puts fizzbuzz_2.(12)
+    IO.puts fizzbuzz_2.(13)
+    IO.puts fizzbuzz_2.(14)
+    IO.puts fizzbuzz_2.(15)
+    IO.puts fizzbuzz_2.(16)
+    IO.puts "___"
+
+    # IEX Bonus Question 3:
+    # for n <- 10..16, do: fizzbuzz_2.(n)  # Returns: list of outputs
+    fizzbuzz_3 = fn ->
+      Enum.each(10..16, &IO.puts(fizzbuzz_2.(&1)))
+    end
+    fizzbuzz_3.()  # Returns: matching string
   end
 
-  # Returning Functions
-  def temp_3 do
+  # IEX Returning Functions:
+  def fun_3 do
     function = fn ->
       fn ->
         "Hello"
       end
     end
-    IO.puts function.().()
+    IO.puts function.().()  # Returns: Hello
   end
 
-  # Binding Functions
-  def temp_4 do
+  # IEX Binding Functions:
+  def fun_4 do
     function = fn -> (fn -> "Hello" end) end
     other = function.()
-    IO.puts other.()
+    IO.puts other.()  # Returns: Hello
   end
 
-  # Remembering Original Environment
-  def temp_5 do
+  # IEX Remembering Original Environment:
+  def fun_5 do
     greeter = fn name -> (fn -> "Hello #{name}" end) end
     dave_greeter = greeter.("Dave")
-    IO.puts dave_greeter.()
+    IO.puts dave_greeter.()  # Returns: Hello Dave
   end
 
-  # Parameterized Functions
-  def temp_6 do
+  # IEX Parameterized Functions:
+  def fun_6 do
     add_n = fn n -> (fn other -> n + other end) end
     add_two = add_n.(2)
     add_five = add_n.(5)
-    IO.puts add_two.(3)
-    IO.puts add_five.(7)
+    IO.puts add_two.(3)  # Returns: 5
+    IO.puts add_five.(7)  # Returns: 12
   end
 
-  # Quiz (pg.47)
-  def temp_7 do
+  # IEX Quiz (Page 47) - Create prefix function:
+  def fun_7 do
     prefix = fn string1 -> (fn string2 -> string1 <> " " <> string2 end) end
     mrs = prefix.("Mrs.")
-    IO.puts mrs.("Smith")
-    IO.puts prefix.("Elixir").("Rocks")
+    IO.puts mrs.("Smith")  # Returns: Mrs. SMmith
+    IO.puts prefix.("Elixir").("Rocks")  # Returns: Elixir Rocks
   end
 
-  # Passing Functions
-  def temp_8 do
+  # IEX Passing Functions:
+  def fun_8 do
     times_2 = fn n -> n * 2 end
     apply = fn (fun, value) -> fun.(value) end
-    IO.puts apply.(times_2, 6)
+    IO.puts apply.(times_2, 6)  # Returns: 12
   end
 
-  # Passing Map Functions
-  def temp_9 do
-    list = [1, 3, 5, 7, 9]
+  # IEX Passing Map Functions (Problematic):
+  def fun_9 do
+    list = [0, 1, 3, 5, 7, 9]
     IO.puts [101, 102, 103, 104] == 'efgh'
-    # IEx.configure(inspect: [charlists: :as_lists])
-    IO.puts Enum.map list, fn elem -> elem * 2 end
-    IO.puts Enum.map list, fn elem -> elem * elem end
-    # IO.puts Enum.map list, fn elem -> elem > 6 end
+    IO.puts Enum.map list, fn elem -> elem * 2 end  # Returns: list times 2
+    IO.puts Enum.map list, fn elem -> elem * elem end  # Returns: list squared
+   Enum.map list, fn elem -> elem > 6 end  # Returns: list boolean
   end
 
-  # Pinned Function Values
-  def temp_10 do
-    mr_valim = Temp.for("Jose", "Oi!")
-    IO.puts mr_valim.("Jose")
-    IO.puts mr_valim.("Dave")
+  # IEX Pinned Function Values:
+  def fun_10 do
+    mr_valim = F.for("Jose", "Oi!")
+    IO.puts mr_valim.("Jose")  # Returns: Oi! Jose
+    IO.puts mr_valim.("Dave")  # Returns: I don't know you
   end
   def for(name, greeting) do
     fn
@@ -136,26 +149,52 @@ defmodule Temp do
     end
   end
 
-  # Short Helper Functions (Order Sensitive)
-  def temp_11 do
+  # IEX Short Helper Functions (Order Sensitive):
+  def fun_11 do
     add_one = &(&1 + 1)
-    IO.puts add_one.(44)
+    IO.puts add_one.(44)  # Returns: 45
     square = &(&1 * &1)
-    IO.puts square.(8)
+    IO.puts square.(8)  # Returns: 64
     speak = &(IO.puts(&1))
-    IO.puts speak.("Hello")
-    rnd = &(Float.round(&1, &2))
-    IO.puts rnd.(8.15235, 3)
+    IO.puts speak.("Hello")  # Returns: Hello
+    rnd = &(Float.round(&1, &2))  # Note: abstracts away
+    IO.puts rnd.(8.15235, 3)  # Returns: 8.152
+    _rnd = &(Float.round(&2, &1))  # Note: does not abstract away
   end
 
-  # List and Tuple Helper Functions
-  def temp_12 do
+  # IEX List and Tuple Helper Functions:
+  def fun_12 do
     s = &"bacon and #{&1}"
-    IO.puts s.("custard")
+    IO.puts s.("custard")  # Returns: bacon and custard
     match_end = &~r/.*#{&1}$/
-    IO.puts "cat" =~ match_end.("t")
-    IO.puts "cat" =~ match_end.("!")
+    IO.puts "cat" =~ match_end.("t")  # Returns: true
+    IO.puts "cat" =~ match_end.("!")  # Returns: false
     divrem = &{div(&1, &2), rem(&1, &2)}
-    divrem.(13, 5)  # Cannot IO.Puts Tuple
+    divrem.(13, 5)  # Returns: { 2, 3 }
+    # Note: Cannot IO.Puts Tuple
+  end
+
+  # IEX Wrapping Anonymous Functions:
+  def fun_13 do
+    l = &length/1
+    IO.puts l.([ 1, 3, 5, 7 ])  # Returns: 4
+    len = &Enum.count/1
+    IO.puts len.([ 1, 3, 5, 7 ])  # Returns: 4
+    m = &Kernel.min/2
+    IO.puts m.(99, 88)  # Returns: 88
+
+    IO.puts Enum.map [ 1, 2, 3, 4 ], &(&1 + 1)  # Returns: list plus 1
+    IO.puts Enum.map [ 1, 2, 3, 4 ], &(&1 * &1)  # Returns: list squared
+    Enum.map [ 1, 2, 3, 4 ], &(&1 < 3)  # Returns: list boolean
+  end
+
+  # IEX Quiz (Page 50) - Rewrite using & notation:
+  def fun_14 do
+    Enum.map [ 1, 2, 3, 4 ], fn x -> x + 2 end
+    Enum.each [ 1, 2, 3, 4 ], fn x -> IO.inspect x end
+
+    # IEX Quiz Answers:
+    Enum.map [ 1, 2, 3, 4 ], &(&1 + 2)  # Returns: list plus 2
+    Enum.map [ 1, 2, 3, 4 ], &(IO.inspect &1)  # Returns: list element
   end
 end

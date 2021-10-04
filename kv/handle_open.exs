@@ -1,5 +1,5 @@
 # Page 45 Problems
-function_2 = fn
+function_2 = fn 
   (0, 0, _) -> "FizzBuzz"
   (0, _, _) -> "Fizz"
   (_, 0, _) -> "Buzz"
@@ -27,4 +27,4 @@ IO.puts prefix.("Elixir").("Rocks")
 
 # Page 50.
 Enum.map [1,2,3,4], &(&1 + 2)
-Enum.map [1,2,3,4], &{IO.inspect &1}
+Enum.map [1,2,3,4], &(IO.inspect &1)

@@ -1,11 +1,9 @@
-# folder -> cmd -> iex -> c "Chapter_4.exs"
-# git commit -m "xyz" -> git push -u origin main
 Code.compiler_options(ignore_module_conflict: true)
-
+# c "Chapter_4.exs"
 #                   CHAPTER 4
 #________________________________________________
-#
-# Atoms
+
+# IEX Atoms:
 # :fred
 # :is_binary?
 # :var@2
@@ -13,162 +11,184 @@ Code.compiler_options(ignore_module_conflict: true)
 # :===
 # :"func/3"
 # :"long john silver"
-# :эликсир
 
-# Ranges
+# IEX Ranges:
 # 1..10
 
-# Regular Expressions
-# Regex.run ~r{[aeiou]}, "caterpillar"
-# Regex.scan ~r{[aeiou]}, "caterpillar"
-# Regex.split ~r{[aeiou]}, "caterpillar"
-# Regex.replace ~r{[aeiou]}, "caterpillar", "*"
+# IEX Regular Expressions (Space Sensitive):
+# Regex.run ~r{[ aeiou ]}, "caterpillar"
+# Regex.scan ~r{[ aeiou ]}, "caterpillar"
+# Regex.split ~r{[ aeiou ]}, "caterpillar"
+# Regex.replace ~r{[ aeiou ]}, "caterpillar", "*"
 
-# Tuples
+# IEX Tuples:
 # { 1, 2 }
 # { :ok, 42, "next" }
 # { :error, :enoent }
-# {status, count, action} = {:ok, 42, "next"}
+# { status, count, action } = { :ok, 42, "next" }
 # { :ok, file } = File.open("chapter_4.exs")
-# { :ok, file } = File.open("non-existent")  (error)
+# { :ok, file } = File.open("non-existent.exs")  # Error: :ok != :error
 
-# Lists (Command-Line Parameters)
-# [1, 2, 3] ++ [4, 5, 6]
-# [1, 2, 3, 4] -- [2, 4]
-# 1 in [1,2,3,4]
-# "wombat" in [1, 2, 3, 4]
+# IEX Lists (Command-Line Parameters):
+# [1, 2, 3] ++ [4, 5, 6]  # Note: join
+# [1, 2, 3, 4] -- [2, 4]  # Note: remove
+# 1 in [ 1, 2, 3, 4 ]  # Note: contains
+# "wombat" in [ 1, 2, 3, 4 ]
 
-# Keyword Lists Conversion
+# IEX Keyword Lists Conversion:
 # [ name: "Dave", city: "Dallas", likes: "Programming" ]
-# [ {:name, "Dave"}, {:city, "Dallas"}, {:likes, "Programming"} ]
-# [1, fred: 1, dave: 2]
-# {1, fred: 1, dave: 2}
+# [ { :name, "Dave" }, { :city, "Dallas" }, { :likes, "Programming" } ]  # Note: converts to above
+# [ 1, { :fred, 1 }, { :dave, 2 } ]
+# [ 1, fred: 1, dave: 2 ]  # Note: converts to above
+# { 1, [ fred: 1, dave: 2 ] }
+# { 1, fred: 1, dave: 2 }  # Note: converts to above
 
-# Maps (Associative Array)
+# IEX Maps (Associative Array):
 # states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
 # responses = %{ { :error, :enoent } => :fatal, { :error, :busy } => :retry }
 # colors = %{ :red => 0xff0000, :green => 0x00ff00, :blue => 0x0000ff }
-# %{ "one" => 1, :two => 2, {1,1,1} => 3 }
+# %{ "one" => 1, :two => 2, { 1, 1, 1 } => 3 }
 # name = "Jose Valim"
 # %{ String.downcase(name) => name }
 
-# Accessing Maps
+# IEX Accessing Maps:
 # states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
-# states["AL"]
-# states["TX"]
-# response_types = %{ { :error, :enoent } => :fatal }+-
-# response_types[{:error,:enoent}]
-# response_types[{:error,:busy}]
+# states[ "AL" ]  # Returns: "Alabama"
+# states[ "TX" ]  # Returns: nil
+# response_types = %{ { :error, :enoent } => :fatal }
+# response_types[ { :error, :enoent } ]  # Returns: :fatal
+# response_types[ { :error, :busy } ]  # Returns: nil
 # colors = %{ red: 0xff0000, green: 0x00ff00, blue: 0x0000ff }
-# colors[:red]
-# colors.green
-# colors[:yellow]
-# colors.yellow  (error)
+# colors[ :red ]  # Returns: 16711680
+# colors.green  # Returns: 65280
+# colors[ :yellow ]  # Returns: nil
+# colors.yellow  # Error: key not found
 
-# Binaries
+# IEX Binaries:
 # bin = << 1, 2 >>
-# byte_size bin
+# byte_size bin  # Returns: 2
 
-# Dates and Times
+# IEX Dates and Times:
 # d1 = Date.new(2018, 12, 25)
-# {:ok, d1} = Date.new(2018, 12, 25)
-# d2 = ~D[2018-12-25]
-# d1 == d2
+# { :ok, d1 } = Date.new(2018, 12, 25)
+# d2 = ~D[2018-12-25]  # Note: space sensitive
+# d1 == d2  # Returns: true
 # Date.day_of_week(d1)
 # Date.add(d1, 7)
 # inspect d1, structs: false
+# d1 == d2  # Returns: true
 
-# Range of Dates
+# IEX Range of Dates:
 # d1 = ~D[2018-01-01]
 # d2 = ~D[2018-06-30]
 # first_half = Date.range(d1, d2)
-# Enum.count(first_half)
-# ~D[2018-03-15] in first_half
+# Enum.count(first_half)  # Returns: 181
+# ~D[2018-03-15] in first_half  # Returns: true
 
-# Fractional Seconds
-# {:ok, t1} = Time.new(12, 34, 56)
+# IEX Fractional Seconds:
+# { :ok, t1 } = Time.new(12, 34, 56, 78)
 # t2 = ~T[12:34:56.78]
-# t1 == t2
-# Time.add(t1, 3600)
-# Time.add(t1, 3600, :millisecond)
+# t1 == t2  # Returns: false
+# { :ok, t1 } = Time.new(12, 34, 56, 780000)
+# t1 == t2  # Returns: false
+# t2 = ~T[12:34:56.780000]
+# t1 == t2  # Returns: true
+# Time.add(t1, 3600)  # Note: adds 1 hour
+# Time.add(t1, 3600, :millisecond)  # Note: adds 4 seconds
 
-# Valid Variables
+# IEX Valid Variables (Not CMD Friendly):
 # name
 # josé
 # _age
 # まつもと_42
 # адрес!
 
-# Invalid Variables
-# name•
-# a±2
-# 42
+# IEX Invalid Variables (Not CMD Friendly):
+# name•  # Error: ! and ? identifiers endings only
+# a±2  # Error: operator
+# 42  # Error: operand
 
-# Truth
-# a === b  # strict equality (so 1 === 1.0 is false)
-# a !== b  # strict inequality (so 1 !== 1.0 is true)
-# a == b  # value equality (so 1 == 1.0 is true)
-# a != b  # value inequality (so 1 != 1.0 is false)
-# a > b  # normal comparison
+# IEX Truth Statements:
+# a === b  # Note: strict equality (so 1 === 1.0 is false)
+# a !== b  # Note: strict inequality (so 1 !== 1.0 is true)
+# a == b  # Note: value equality (so 1 == 1.0 is true)
+# a != b  # Note: value inequality (so 1 != 1.0 is false)
+# a > b  # Note: value comparison
 # a >= b
 # a < b
 # a <= b
 
-# Boolean Operators
-# a or b  # true if a is true; otherwise b
-# a and b  # false if a is false; otherwise b
-# not a  # false if a is true; true otherwise
-# a || b  # a if a is truthy; otherwise b
-# a && b  # b if a is truthy; otherwise a
-# !a  # false if a is truthy; otherwise true
+# IEX Boolean Operators:
+# a or b  # Note: true if a is true; otherwise b
+# a and b  # Note: false if a is false; otherwise b
+# not a  # Note: false if a is true; true otherwise
+# a || b  # Note: a if a is truthy; otherwise b
+# a && b  # Note: b if a is truthy; otherwise a
+# !a  # Note: false if a is truthy; otherwise true
 
-# Arithmetic Operators
+# IEX Arithmetic Operators:
 # + - * /
-# div(a, b)  # returns integer.
-# rem(a, b)  # returns remainder.
+# div(a, b)  # Note: returns an integer.
+# rem(a, b)  # Note: returns the remainder.
 
-# Join Operators
-# binary1 <> binary2  # concatenates two binaries
-# list1 ++ list2  # concatenates two lists
-# list1 -- list2  # removes elements of list 2 from a copy of list 1
+# IEX Join Operators:
+# binary1 <> binary2  # Note: joins two binaries
+# list1 ++ list2  # Note: joins two lists
+# list1 -- list2  # Note: removes elements of list 2 from a copy of list 1
 
-# In Operator
-# a in enum  # tests if a is included in enum
-# {a, b} in map  # tests if {a, b} is included in map
+# IEX In Operator (Enum):
+# a in enum  # Note: check if a is included in enum
+# list = [ 1, 2, 3]
+# 1 in list  # Returns: true
+# a = 1
+# a in list  # Returns: true
 
-defmodule Temp do
-  # If Block
-  def temp_1 do
-    line_no = 50
-    if (line_no == 50) do
-      IO.puts "new-page\f"
+# IEX In Operator (Map):
+# { a, b } in map  # Note: check if { a, b } is included in map
+# states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
+# { "AL" } in states  # Returns: false
+# { "AL", "WI" } in states  # Returns: false
+# { "AL", "Alabama" } in states  # Returns: true
+
+# IEX Function Executions (F.fun_1):
+defmodule F do
+  def fun_1 do
+    # IEX If-Else Expression:
+    line_no = :rand.uniform(3)
+    header = "line_no = #{line_no} |"
+    if (line_no === 1) do
+      IO.puts "#{header} new-page\n"
+    else if (line_no === 2) do
+      IO.puts "#{header} double-page\n\n"
+    else
+      IO.puts "#{header} many-pages\n\n\n"
+    end
     end
   end
 
-  # With Expression
-  def temp_2 do
+  def fun_2 do
+    # IEX With Expression:
     content = "Now is the time"
-    lp =
-      with {:ok, file} = File.open("etc/passwd.txt"),
-            content = IO.read(file, :all),
-            :ok = File.close(file),
-            [_, uid, gid] <- Regex.run(~r/^_lp:.*?:(\d+):(\d+)/m, content) do
-        "Group: #{gid}, User: #{uid}"
-      end
-      # => Group: 26, User: 26
-      IO.puts(lp)
-      # => Now is the time
-      IO.puts(content)
+    identification =
+      with { :ok, file } = File.open("etc/password.txt"),
+        content = IO.read(file, :all),
+        :ok = File.close(file),
+        [ _, uid, gid ] <- Regex.run(~r/^_lp:.*?:(\d+):(\d+)/m, content) do
+          "Group: #{gid}, User: #{uid}"
+        end  # Note: content variable restored to original value
+    IO.puts(identification)  # Returns: Group: 26, User: 26
+    IO.puts(content)  # Returns: Now is the time
 
-      # Match without failing
-      with [a|_] <- [1,2,3], do: IO.puts a
-      with [a|_] <- nil, do: IO.puts a
+    # IEX Match Without Failing:
+    with [ a | _ ] <- [ 1, 2, 3 ], do: IO.puts a  # Returns: 1
+    with [ a | _ ] <- nil, do: IO.puts a  # Returns: nil
 
-      # Function calls
-      values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      mean = with count = Enum.count(values),
-                  sum = Enum.sum(values),
-             do: sum/count
-      IO.puts(mean)
+    # IEX Function Calls:
+    values = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+    mean =
+      with count = Enum.count(values),
+      sum = Enum.sum(values),
+      do: sum / count
+    IO.puts(mean)
   end
 end
